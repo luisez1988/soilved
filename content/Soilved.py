@@ -14,3 +14,11 @@ def GetWaterContent(WtPWc, WsPWc,Wc):
     Ws=WsPWc-Wc
 
     return (Ww/Ws)*100 #water content in percentage
+
+def GetTotalUWeight(Gs, S, e, gamma_w=9.81):
+    #Gs=            specific gravity
+    #S=             saturation dimensionless
+    #e=             void ratio
+    #gamma_w        U. weight of water SI default
+
+    return gamma_w*(Gs+S*e)/(1+e) #returns UW in same units as gamma_w
