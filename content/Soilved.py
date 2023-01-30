@@ -39,6 +39,9 @@ def Process_GSD(GSD_data, plot_fig=True):
 
     #Plot details####
     if (plot_fig):
+        PlotGSD(GSD_data)
+
+def PlotGSD(GSD_data):
         plt.plot(GSD_data[GSD_data.columns[0]][:-2], GSD_data[GSD_data.columns[4]][:-2], '*-') #GSD plot
         plt.xscale('log') #d scale in log scale        
         plt.ylabel(r'Percent finer [$\%$]') # adds y label
@@ -63,6 +66,11 @@ def Process_GSD(GSD_data, plot_fig=True):
         ax2= plt.twinx() # second axis
         ax2.set_ylim(100,0)
         ax2.set_ylabel(r'Percent coarser [$\%$]')
+
+def log_interp(x, y, xi):
+    logx = np.log10(x)    
+    logxi = np.log10(xi)
+    return np.power(10.0, np.interp(logx, y, logxi))
 
 
 
