@@ -28,7 +28,7 @@ def Process_GSD(GSD_data):
     Wtd=GSD_data[GSD_data.columns[1]].iloc[-1] #second column last row
     GSD_data['Weight retained']=[0.000000]*len(GSD_data[GSD_data.columns[1]]) # add new column for retained weight
     GSD_data['Retained']=[0.0000000]*len(GSD_data[GSD_data.columns[1]])#adds a new column named 'Retained'
-    GSD_data['Passing']=[0.000000]*len(GSD_data[GSD_data.columns[1]])#adds a new column named 'Retained'
+    GSD_data['Passing']=[0.000000]*len(GSD_data[GSD_data.columns[1]])#adds a new column named 'Passing'
     W=0 #accumulates weight
     for i in range(len(GSD_data[GSD_data.columns[1]])):
         W += GSD_data[GSD_data.columns[1]][i] #accumulates weight
