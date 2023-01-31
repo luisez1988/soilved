@@ -80,6 +80,15 @@ def GetClayFraction(D, Passing):
     return iterp_func(d_clay)
 
 
+def GetSrinkageLimit(V_dry, Ws, gamma_w=9.81, Gs=2.67):
+    #Vdry=      Dry volume in consistent units
+    #Ws=        Dry weight in consistent units
+    #gamma_w=   Unit weight of water in consistent units default 9.81 kN/m^3
+    #Gs=        Specific gravity default 2.67
+
+    return ((V_dry*gamma_w/Ws)-(1/Gs))*100 
+
+
 
 
 
