@@ -3,8 +3,9 @@
 #contact: luis.zambrano@maine.edu
 
 import numpy as np 
-import pandas as np
+import pandas as pd
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
 
 def GetWaterContent(WtPWc, WsPWc,Wc):
     #WtPWc=         Total weight + weight of container
@@ -39,10 +40,10 @@ def Process_GSD(GSD_data, plot_fig=True):
 
     #Plot details####
     if (plot_fig):
-        PlotGSD(GSD_data)
+        PlotGSD(GSD_data[:-2])
 
 def PlotGSD(GSD_data):
-        plt.plot(GSD_data[GSD_data.columns[0]][:-2], GSD_data[GSD_data.columns[4]][:-2], '*-') #GSD plot
+        plt.plot(GSD_data[GSD_data.columns[0]], GSD_data[GSD_data.columns[4]], '*-') #GSD plot
         plt.xscale('log') #d scale in log scale        
         plt.ylabel(r'Percent finer [$\%$]') # adds y label
         plt.xlabel(r'Particle size [mm]') # adds x label
@@ -67,10 +68,18 @@ def PlotGSD(GSD_data):
         ax2.set_ylim(100,0)
         ax2.set_ylabel(r'Percent coarser [$\%$]')
 
-def log_interp(x, y, xi):
-    logx = np.log10(x)    
-    logxi = np.log10(xi)
-    return np.power(10.0, np.interp(logx, y, logxi))
+def log_interp(x, Ds, P): #interpolates in GSD
+    logd = np.log10(Ds) #transforms diameters to log values  
+    interp_func=interp1d(P, logd) 
+    return np.power(10.0, interp_func(x)) #finds solution
+
+def GetClayFraction(D, Passing):
+    d_clay=np.log10(0.002) #2 microns expressed in mm
+    logD=np.log10(D) #diameter in log space
+    iterp_func=interp1d(logD, Passing)
+    return iterp_func(d_clay)
+
+
 
 
 
