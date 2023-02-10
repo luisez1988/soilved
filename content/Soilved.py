@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
+from scipy.interpolate import CubicSpline
 
 def GetWaterContent(WtPWc, WsPWc,Wc):
     #WtPWc=         Total weight + weight of container
@@ -271,6 +272,36 @@ def GetMinorFraction_coarse(PI, LL, FL):
             sufix="with silt"
             prefix="Silty"
     return Group, sufix, prefix
+
+def GetCompactionLines(w, S, gamma_w=9.81, Gs=2.65):
+    #w=         water content percent
+    #gamma_w=   Unit weight of water default 9.81 kN/m^3
+    #Gs=        Specific gravity default 2.65
+    #S=         Saturation percent
+
+    return gamma_w*Gs/(1+(w*Gs/S))
+
+def ProcessProctor(w, gamma, units='kN/m$^3$', doplot=True):
+    #w      water content in percent
+    #gamma  dry unit weight
+    #units  string with units for plot
+    #doplot boolean for plotting results
+
+    f= CubicSpline(w, gamma, bc_type='natural') #Create the cubic spline functions (this is super fun to learn)
+
+    wnew=np.linspace(min(w)*0.9, max(w)*1.1, 100) #generates line to create spline
+    gamma_new=f(wnew) # generates interpolations
+    gamma_max=max(gamma_new) # obtains approximation to max dry unit weight
+    inter_func=interp1d(gamma_new,wnew) # creates an inverse interpolation
+    w_opt=inter_func(gamma_max) # optimum water content    
+
+    if (doplot):
+        plt.plot(w, gamma, '*') # data
+        plt.plot(wnew, gamma_new, 'green') # cubic spline
+        plt.xlabel(r'Water content $w$ [%]') #x label
+        plt.ylabel((r'Max. dry unit weight $\gamma_{d,max}$ %s' %units))
+
+    return gamma_max, w_opt
 
 
 
