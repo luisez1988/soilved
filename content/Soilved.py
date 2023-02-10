@@ -301,7 +301,19 @@ def ProcessProctor(w, gamma, units='kN/m$^3$', doplot=True):
         plt.xlabel(r'Water content $w$ [%]') #x label
         plt.ylabel((r'Max. dry unit weight $\gamma_{d,max}$ %s' %units))
 
-    return gamma_max, w_opt
+    return gamma_max, w_opt, gamma_new, wnew
+
+def GetSpecifcationsFor(RC, gamma_new, wnew):
+    #RC             relative compaction in percent
+    #gamma_new      interp. data
+    #wnew           water content consistent w/ iterp data
+
+    gamma_max=max(gamma_new) #maximum dry density
+    min_density=gamma_max*RC/100 # minimum compaction at field
+    w=wnew[np.argwhere(np.diff(np.sign(min_density-gamma_new))).flatten()] #returns the water content values
+
+    return min_density, w
+
 
 
 
