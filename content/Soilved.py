@@ -314,6 +314,19 @@ def GetSpecifcationsFor(RC, gamma_new, wnew):
 
     return min_density, w
 
+def GetSoilFrostLimits(GSD):
+    #GSD=       Grain size distribution in pandas dataframe
+    #           Ensure that Percent finer is the 4th column
+    
+    Upper=pd.read_csv("./data/upper.csv") #Upper GSD limit
+    mid=pd.read_csv("./data/mid.csv") #middle GSD limit
+    low=pd.read_csv("./data/lower.csv") #lower GSD limit
+    plt.plot(Upper['d'], Upper['PP'], color='green') #upper limit in green color
+    plt.plot(mid['d'], mid['PP'], color='red') #middle limit in red color
+    plt.plot(low['d'], low['PP'], color='red') #lower limit in red color
+    PlotGSD(GSD) #plots the GSD
+    
+
 
 
 
