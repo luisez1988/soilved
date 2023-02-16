@@ -325,7 +325,45 @@ def GetSoilFrostLimits(GSD):
     plt.plot(mid['d'], mid['PP'], color='red') #middle limit in red color
     plt.plot(low['d'], low['PP'], color='red') #lower limit in red color
     PlotGSD(GSD) #plots the GSD
+
+
+def GetK0Stresses(z, zw, borehole_data, gamma_w=9.81):
+    #borehole_data [z_b, t, gamma_t]
+    # locate point index
     
+    for i in range(len(borehole_data)):        
+        if (z<borehole_data['z_b'][i]): # point within layer
+            break #break loop
+        
+    i=i-1 #index of last whole layer
+    if (i>-1): #more than one layer
+       #Compute the total stress
+        sigma_t=0
+        for j in range(0,i+1):
+            sigma_t=sigma_t+borehole_data['t'][j]*borehole_data['gamma_t'][j]
+    else:
+        sigma_t=0
+    
+    #Add the partial layer
+    if (i>-1):
+        portion=borehole_data['z_b'][i]
+    else:
+        portion=0
+            
+    sigma_t=sigma_t+(z-portion)*borehole_data['gamma_t'][i+1]
+    
+    #Compute pore pressure
+    if ((z-zw)>0):
+        u=(z-zw)*gamma_w
+    else:
+        u=0    
+    sigma_eff=sigma_t-u
+    #Compute horizontal stresses
+    sigma_h_eff=sigma_eff*borehole_data['K0'][i+1]
+    sigma_h_t=sigma_h_eff+u
+    
+    return sigma_t, sigma_eff, u, sigma_h_eff, sigma_h_t 
+
 
 
 
