@@ -364,6 +364,20 @@ def GetK0Stresses(z, zw, borehole_data, gamma_w=9.81):
     
     return sigma_t, sigma_eff, u, sigma_h_eff, sigma_h_t 
 
+def Getk_Hazen(d10, C=1): #Hazen's empirical equation
+    #d10:       particle size for 10 percent finer in mm
+    return C*d10**2
+
+def Getk_Chapuis(d10, e): #Chapiuis formula
+    #d10:       particle size for 10 percent finer in mm
+    #e:         void ratio
+    return 2.4622*d10**2 * e**3/(1+e)
+
+def Getk_KC(e, Ss, Ckc=2): #Kozeny-Carman's formula
+    #e:         void ratio
+    #Ss:        specific surface in 1/cm
+    #Ckc:       Kozeny-Carman coefficient
+    return 9.81*e**3/(1.002e-3* Ss**2 * (1+e))
 
 
 
