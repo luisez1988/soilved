@@ -377,7 +377,7 @@ def Getk_KC(e, Ss, Ckc=2): #Kozeny-Carman's formula
     #e:         void ratio
     #Ss:        specific surface in 1/cm
     #Ckc:       Kozeny-Carman coefficient
-    return 9.81*e**3/(1.002e-3* Ss**2 * (1+e))
+    return 9.81*e**3/(1.002e-3*2* Ss**2 * (1+e))
 
 
 
